@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Allow: /2015/
+Allow: /2016/
+Allow: /archives/
+
+Disallow: /js/
+Disallow: /css/
+Disallow: /vendors/
+
+Sitemap: http://www.xsnow.moe/sitemap.xml

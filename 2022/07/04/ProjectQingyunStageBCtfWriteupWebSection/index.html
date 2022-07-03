@@ -98,7 +98,7 @@
 <meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/Challenge3Base64DecodeGetRealFlag.png">
 <meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/SolvedProblems.png">
 <meta property="og:image" content="https://www.xuefeng.space/images/uploads/20220704/QingyunStageBMeme.gif">
-<meta property="og:updated_time" content="2022-07-03T20:13:53.017Z">
+<meta property="og:updated_time" content="2022-07-03T20:23:15.183Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="单位内部CTF-Web部分WriteUp">
 <meta name="twitter:description" content="总分1000，时长两小时，我只拿了250，菜">
@@ -297,7 +297,7 @@
 <p><img src="/images/uploads/20220704/Challenge1AdminConsole.png" alt="Challenge1AdminConsole"></p>
 <p>项目管理有个上传点</p>
 <p><img src="/images/uploads/20220704/Challenge1ProjectManagement.png" alt="Challenge1ProjectManagement"></p>
-<p>文件名留空或者../../../../../../这种无法访问的路径，上传会报错，得到保存路径 <code>/upload</code></p>
+<p>文件名留空或者../../../../../../这种无法访问的路径，上传会报错，得到保存路径 <code>/uploaded</code></p>
 <p><img src="/images/uploads/20220704/Challenge1UploadError.png" alt="Challenge1UploadError"></p>
 <p>经过fuzz判断为后缀黑名单过滤，可以上传.htaccess，内容如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AddType application/x-httpd-php .jpg</span><br></pre></td></tr></table></figure>
